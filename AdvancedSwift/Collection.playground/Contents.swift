@@ -1,5 +1,48 @@
 import UIKit
 
+let a = NSMutableArray(array: [1, 2, 3])
+let b = a
+a.insert(4, at: 3)
+a
+b//事实上被a的影响所改变
+
+//正确的做法是先手动复制
+let c = NSMutableArray(array: [5, 6, 7])
+let d = c.copy() as! NSArray
+c.insert(8, at: 3)
+c
+d
+
+
+//Map的实现
+//@inlinable
+//public func map<T>(
+//  _ transform: (Element) throws -> T
+//) rethrows -> [T] {
+//  let initialCapacity = underestimatedCount
+//  var result = ContiguousArray<T>()
+//  result.reserveCapacity(initialCapacity)
+//
+//
+//  var iterator = self.makeIterator()
+//
+//
+//  // Add elements up to the initial capacity without checking for regrowth.
+//  for _ in 0..<initialCapacity {
+//    result.append(try transform(iterator.next()!))
+//  }
+//  // Add remaining elements, if any.
+//  while let element = iterator.next() {
+//    result.append(try transform(element))
+//  }
+//  return Array(result)
+//}
+
+
+
+
+
+
 let name = ["Paul", "Elena", "Zoe"]
 
 var lastNameEndingInA: String

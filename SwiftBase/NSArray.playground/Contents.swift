@@ -1,5 +1,7 @@
 import Foundation
 
+// NSArray和NSMutableArray不是强类型的
+
 class Person : NSObject, NSCopying {
     func copy(with zone: NSZone? = nil) -> Any {
         return Person(name: self.name, country: self.country);

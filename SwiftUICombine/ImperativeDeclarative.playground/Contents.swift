@@ -11,12 +11,12 @@ enum 科⽬: String, CaseIterable {
 
 
 let s1 = Student(name: "Jane", scores: [.语⽂: 86, .数学: 92, .英语: 73, .物理: 88])
-let s2 = Student(name: "Tom", scores: [.语⽂: 99, .数学: 52, .英语: 97, .物理: 36])
+let s2 = Student(name: "Tomy", scores: [.语⽂: 99, .数学: 52, .英语: 97, .物理: 36])
 let s3 = Student(name: "Emma", scores: [.语⽂: 91, .数学: 92, .英语: 100, .物理: 99])
 
 let students = [s1, s2, s3]
 
-
+//指令式Imperative
 var best: (Student, Double)?
 
 for s in students {
@@ -39,15 +39,15 @@ for s in students {
 
 if let best = best {
         print("最⾼平均分: \(best.1), 姓名: \(best.0.name)")
-        } else {
+    } else {
         print("students 为空")
-    }
+}
 
 
 
-
+//声明式Declarative
 func average(_ scores: [科⽬: Int]) -> Double {
-    return Double(scores.values.reduce(0, +)) / Double(科⽬.allCases.count)
+    Double(scores.values.reduce(0, +)) / Double(科⽬.allCases.count)
 }
 
 //先将students映射为(Student, 平均分)的数组

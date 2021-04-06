@@ -1,6 +1,54 @@
 import UIKit
 
-//扩展可以给一个现有的类,结构体,枚举还有协议添加新的功能
+//扩展可以给一个现有的
+//  类
+//  结构体
+//  枚举
+//  协议
+//添加新的功能,比如新的类方法实例方法和计算属性
+//可以使用扩展让某个在别处声明的类型来遵守某个协议,这同样适用于从外部库或者框架引入的类型
+//扩展不能重写译有成员
+//扩展不能声明指定初始化器和析构器
+
+extension Array {
+    mutating func shuffle() {
+        for i in (0..<self.count) {
+            let ix1 = i
+            let ix2 = Int(arc4random_uniform(UInt32(i + 1)))
+            (self[ix1], self[ix2]) = (self[ix2], self[ix1])
+            
+        }
+    }
+}
+
+var xxx = [1, 2, 3, 4]
+
+xxx.shuffle()
+xxx.shuffle()
+
+
+
+protocol ExampleProtocol {
+    var simpleDescription: String { get }
+    mutating func adjust()
+}
+
+extension Int: ExampleProtocol {
+    var simpleDescription: String {
+        return "The number \(self)"
+    }
+    
+    mutating func adjust() {
+        self += 42
+    }
+}
+print(7.simpleDescription)
+var intad = 8
+intad.adjust()
+
+
+
+
 //它还拥有不需要访问被扩展类型源代码就能完成扩展的能力,即逆向建模
 //扩展和Objective-C的分类很相似,但是与Objective-C分类不同的是Swift扩展是没有名字的
 //Swift中的扩展可以：

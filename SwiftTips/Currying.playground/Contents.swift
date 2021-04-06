@@ -62,12 +62,3 @@ func addTwoNumber(a: Int) -> (_ num: Int) -> Int {
 let addToFour = addTwoNumber(a: 4)
 addToFour(6)
 
-//函数柯里化初步
-func makeIncrementer() -> ((Int) -> Int) {
-    func addOne(number: Int) -> Int {
-        return 1 + number
-    }
-    return addOne
-}
-var increment = makeIncrementer()
-increment(7)

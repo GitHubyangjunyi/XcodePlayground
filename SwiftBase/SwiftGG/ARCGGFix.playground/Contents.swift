@@ -1,17 +1,15 @@
 import UIKit
 
 //当其他的实例有更短的生命周期时使用弱引用
-//在上面公寓的例子中很显然一个公寓在它的生命周期内会在某个时间段没有它的主人所以一个弱引用就加在公寓类里面
+//一个公寓在它的生命周期内会在某个时间段没有它的主人所以一个弱引用就加在公寓类里面
 //当其他实例有相同的或者更长生命周期时请使用无主引用
-
-//ARC会在引用的实例被销毁后自动将其弱引用赋值为nil并且因为弱引用需要在运行时允许被赋值为nil所以它们会被定义为可选类型变量而不是常量
 //当ARC设置弱引用为nil时属性观察不会被触发
 
 class Person {
     let name: String
     init(name: String) { self.name = name }
     
-    var apartment: Apartment?
+    lazy var apartment: Apartment? = Apartment.init(unit: "<#T##abc###>")
     
     deinit { print("\(name) is being deinitialized") }
 }
@@ -102,9 +100,6 @@ john = nil
 
 //每个国家必须有首都,每个城市必须属于一个国家
 //为了实现这种关系Country类拥有一个capitalCity属性而City类有一个country属性
-
-
-
 class Country {
     let name: String
     var capitalCity: City!
@@ -122,16 +117,12 @@ class City {
         self.country = country
     }
 }
-
-
 //Country的构造器调用了City的构造器,然而只有Country的实例完全初始化后Country的构造器才能把self传给City的构造器
 //为了满足这种需求通过在类型结尾处加上感叹号的方式将Country的capitalCity属性声明为隐式解包可选值类型的属性,这意味着像其他可选类型一样capitalCity属性的默认值为nil
 //但是不需要展开它的值就能访问它
 //由于capitalCity默认值为nil一旦Country的实例在构造器中给name属性赋值后整个初始化过程就完成了
 //这意味着一旦name属性被赋值后Country的构造器就能引用并传递隐式的self,Country的构造器在赋值capitalCity时就能将self作为参数传递给City的构造器
 //上述的意义在于你可以通过一条语句同时创建Country和City的实例而不产生循环强引用,并且capitalCity的属性能被直接访问而不需要通过感叹号来展开它的可选值
-
-
 var country = Country(name: "Canada", capitalName: "Ottawa")
 print("\(country.name)'s capital city is called \(country.capitalCity.name)")
 //打印“Canada's capital city is called Ottawa”
@@ -144,9 +135,6 @@ print("\(country.name)'s capital city is called \(country.capitalCity.name)")
 //循环强引用的产生是因为闭包和类相似都是引用类型,当你把一个闭包赋值给某个属性时你是将这个闭包的引用赋值给了属性
 //Swift提供了一种优雅的方法来解决这个问题称之为闭包捕获列表
 //下面的例子为你展示了当一个闭包引用了self后是如何产生一个循环强引用的,例子中定义了一个叫HTMLElement的类用一种简单的模型表示HTML文档中的一个单独的元素
-
-
-
 class HTMLElement {
 
     let name: String

@@ -69,7 +69,7 @@ print("Media library contains \(movieCount) movies and \(songCount) songs")
 //因为向下转型可能会失败所以类型转型操作符带有两种不同形式
 //条件形式as?返回一个你试图向下转成的类型的可选值
 //强制形式as!把试图向下转型和强制解包转换结果结合为一个操作
-//当你不确定向下转型可以成功时用类型转换的条件形式as?返回一个可选值并且若下转是不可能的可选值将是nil,这使你能够检查向下转型是否成功
+//当你不确定向下转型可以成功时用类型转换的条件形式as?返回一个可选值并且若下转是不可能的可选值将是nil
 //只有你可以确定向下转型一定会成功时才使用强制形式as!
 //当你试图向下转型为一个不正确的类型时强制形式的类型转换会触发一个运行时错误
 
@@ -136,3 +136,118 @@ things.append(optionalNumber)        //警告
 things.append(optionalNumber!)          //强制解包消除警告
 things.append(optionalNumber ?? 100)    //默认值消除警告
 things.append(optionalNumber as Any)    //指定Any消除警告
+
+
+
+
+
+
+class Dog {
+    class var whatDogSay: String {
+        return "woof"
+    }
+    
+    var name: String
+    
+    required init(name: String) {
+        self.name = name
+    }
+    
+    func bark() {
+        print(type(of: self).whatDogSay)//该类型
+    }
+    
+    class func factory() -> Self {//Self表示运行时该类型的实例
+        return self.init(name: "Factory")
+    }
+    
+}
+
+//Type表示父类或其子类
+func dogMaker(whatType: Dog.Type) -> Dog {
+    let d = whatType.init(name: "Fido")
+    return d
+    
+}
+
+let fido = dogMaker(whatType: Dog.self)
+
+let factory = Dog.factory()
+
+
+
+
+//向AnyObject发送的消息必须满足
+//1.它是OC类成员
+//2.它要是自定义的OC类的Swift子类或扩展的成员
+//3.如果是Swift类的成员必须标记@objc或者dynamic
+//@objcMembers
+class Objc {
+    // 标记为@objc的属性和方法可以作为发送给AnyObject的潜在消息
+    @objc var noise = "www"
+    @objc func bark() -> String {
+        return "sss"
+    }
+}
+
+class Cat {}
+
+
+let c: AnyObject = Cat()
+c.noise// noise属性将成为一个隐式展开可选类型的String
+c.bark?()
+
+//c.bark() // 也可以不展开调用但会导致崩溃
+
+
+
+//AnyClass是AnyObject对应的类且对应于OC中的Class
+class Dox {
+    @objc static var says = "sss" //OC看到并将其作为类属性可以将其发送给AnyClass
+}
+class Doxx {}
+
+let doxxClass: AnyClass = Doxx.self
+doxxClass.says
+
+Dog.self === Cat.self
+
+
+
+
+protocol Together {
+    associatedtype Other
+}
+
+struct Bird: Together {
+    typealias Other = Insect
+}
+
+struct Insect: Together {
+    typealias Other = Bird
+}
+
+func canTogether<T: Together>(flier: T, _ other: Any) {
+    if other is T.Other {
+        print("可以一起")
+    } else {
+        print("不可以一起")
+    }
+}
+
+let bb = Bird()
+let ii = Insect()
+
+canTogether(flier: bb, ii)
+canTogether(flier: ii, 2)
+
+
+
+
+// AnyObject实际上是一个所有类都会遵循的空协议
+class Dogg {}
+let d = Dogg()
+let any: AnyObject = d
+let d2 = any as! Dogg
+
+

@@ -4,11 +4,9 @@ import UIKit
 enum PrinterError: Error {
     case outOfPaper
     case noToner
+    case onFire
 }
 
-//如果在函数中抛出一个错误则函数会立刻返回并且调用该函数的代码会进行错误处理
-//只有throwing函数可以传递错误,任何在某个非throwing函数内部抛出的错误只能在函数内部处理
-//只有throwing函数可以传递错误,任何在某个非throwing函数内部抛出的错误只能在函数内部处理
 //只有throwing函数可以传递错误,任何在某个非throwing函数内部抛出的错误只能在函数内部处理
 func send(job: Int, toPrinter printerName: String) throws -> String {
     if printerName == "Never Has Toner" {
@@ -17,14 +15,9 @@ func send(job: Int, toPrinter printerName: String) throws -> String {
     return "Job sent"
 }
 
+//一条do语句创建一个新的包含范围该范围允许将错误传播到一个或多个catch子句
 //在do代码块中使用try来标记可以抛出错误的代码
 //在catch代码块中除非你另外命名否则错误会自动命名为error
-do {
-    let printerResponse = try send(job: 1040, toPrinter: "Bi Sheng")
-    print(printerResponse)
-} catch {
-    print(error)
-}
 
 do {
     let printerResponse = try send(job: 1040, toPrinter: "Never Has Toner")
@@ -33,7 +26,7 @@ do {
     print(error)
 }
 
-
+//case风格的错误处理
 do {
     let printerResponse = try send(job: 1440, toPrinter: "Never Has Toner")
     print(printerResponse)
@@ -46,17 +39,14 @@ do {
 }
 
 //可选错误处理try?
-//如果函数抛出错误则该错误会被抛弃并且结果为nil
-//否则结果会是一个包含函数返回值的可选值
+//如果函数抛出错误则该错误会被抛弃并且结果为nil否则结果是一个包含函数返回值的可选值
 let printerSuccess = try? send(job: 1884, toPrinter: "Mergenthaler")
 let printerFailure = try? send(job: 1885, toPrinter: "Never Has Toner")
 print(printerSuccess ?? "Job")
-print(printerSuccess!)
+print(printerFailure == nil)
 
 
-//错误处理是响应错误以及从错误中恢复的过程
 //Swift在运行时提供了抛出/捕获/传递/操作可恢复错误的一等支持
-//Swift中有4种处理错误的方式
 //1.你可以把函数抛出的错误传递给调用此函数的代码
 //2.用do-catch语句处理错误
 //3.将错误作为可选类型处理
@@ -189,30 +179,4 @@ do {
 //下面的代码使用了loadImage(atPath:)函数从给定的路径加载图片资源
 //在这种情况下因为图片是和应用绑定的运行时不会有错误抛出所以适合禁用错误传递
 //let photo = try! loadImage(atPath: "./Resources/John Appleseed.jpg")
-
-
-//指定清理操作
-//使用defer语句在即将离开当前代码块时执行一系列语句
-//该语句让你能执行一些必要的清理工作不管是以何种方式离开当前代码块的——无论是由于抛出错误而离开或是由于诸如return、break的语句
-//例如可以用defer语句来确保文件描述符得以关闭以及手动分配的内存得以释放
-//defer语句将代码的执行延迟到当前的作用域退出之前
-//该语句由defer关键字和要被延迟执行的语句组成,延迟执行的语句不能包含任何控制转移语句,例如break、return语句或是抛出一个错误
-//延迟执行的操作会按照它们声明的顺序从后往前执行
-//也就是说第一条defer语句中的代码最后才执行
-//第二条defer语句中的代码倒数第二个执行以此类推
-//最后一条语句会第一个执行
-//即使没有涉及到错误处理的代码也可以使用defer语句
-
-func processFile(filename: String) throws {
-    if exists(filename) {
-        let file = open(filename)
-        defer {
-            close(file)
-        }
-        while let line = try file.readline() {
-            //处理文件
-        }
-        // close(file)会在这里被调用,即作用域的最后
-    }
-}
 

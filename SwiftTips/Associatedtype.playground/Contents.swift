@@ -23,8 +23,9 @@ struct Tiger: Animal {
 let meat = Meat()
 Tiger().eat(meat)
 
-//这样的转换很多时候没有意义并且将责任扔给了运行时,如何在编译时就确保老虎不吃素呢
+//这样的转换很多时候没有意义并且将责任扔给了运行时,那么如何在编译时就确保老虎不吃素呢
 //错误代码如下
+//因为Meat不等价于Food
 //struct TigerX: Animal {
 //    func eat(_ food: Meat) {
 //        print("eat \(food)")
@@ -83,7 +84,7 @@ struct Sheep: AnimalX {
 
 //这是因为Swift需要在编译时就确定所有类型,因为AnimalX包含了一个不确定的类型,所以随着Animal本身类型的变化,其中F的类型是无法确定的
 //比如在isDangerous这个函数内部调用eat将无法指定eat参数的类型
-//在一个协议加入关联类型或者self的约束后将只能被用为泛型约束,而不能作为独立类型的占位符使用,也失去了动态派发的特性
+//在一个协议加入关联类型或者(大写S)Self的约束后将只能被用为泛型约束,而不能作为独立类型的占位符使用,也失去了动态派发的特性
 //在这种情况下需要改写函数为泛型
 
 func isDangerous<T: AnimalX>(animal: T) -> Bool {
