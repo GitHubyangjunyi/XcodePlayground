@@ -65,8 +65,8 @@ print("120 &+ 10 is \(zx)")
 
 let ssss = Optional("sdfdfdf")
 let sss: Optional<String> = "howy"
-print(ssss)
-print(sss)
+print(ssss!)
+print(sss!)
 
 
 
@@ -95,6 +95,13 @@ if case 18...35 = ifcase, ifcase >= 21{
 //    case let .Success(image) = result else {
 //        return
 //}
+
+// where限定
+let name = ["Paul", "Elena", "Zoe"]
+for name in name.reversed() where name.hasSuffix("a") {
+    print("\(name)")
+}
+
 
 
 // 断言和先决条件

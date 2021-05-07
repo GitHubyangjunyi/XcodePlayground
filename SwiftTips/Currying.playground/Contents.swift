@@ -1,5 +1,33 @@
 import UIKit
 
+
+func addTo(_ adder: Int) -> (Int) -> Int {
+    return { num in return num + adder }
+}
+
+let addTwo = addTo(2)
+let result = addTwo(6)
+let resultx = addTo(1)(2)
+
+func greaterThan(_ comparer: Int) -> (Int) -> Bool {
+    return { $0 > comparer }
+}
+
+let greaterThan10 = greaterThan(10);
+greaterThan10(13)
+greaterThan10(9)
+
+
+func addTwoNumber(_ a: Int) -> (_ num: Int) -> Int {
+    return { num in a + num }
+}
+
+let addToFour = addTwoNumber(4)
+let aa = addToFour(6)
+aa
+
+// 柯里化是一种量产相似方法的好办法可以通过柯里化一个方法模板来避免写出很多重复代码也方便了今后维护
+
 func add(_ a: Int, _ b: Int) -> Int {
     return a + b;
 }
@@ -29,36 +57,48 @@ public func curryx<A, B, Result>(_ f: @escaping (A, B) -> Result) -> (A) -> (B) 
 }
 
 //curry(+)(1)(2) // 3
-//curryx(addcc)(1)(2)(3) // 6
+//curryx(addcc)(1)(2) // 6
 
 
-func addOne(num: Int) -> Int {
-    return num + 1
+
+
+protocol TargetAction {
+    func performAction()
+}
+
+struct TargetActionWrapper<T: AnyObject>: TargetAction {
+    weak var target: T?
+    let action: (T) -> () -> ()
+
+    func performAction() -> () {
+        if let t = target {
+            action(t)()
+        }
+    }
+}
+
+enum ControlEvent {
+    case TouchUpInside
+    case ValueChanged
+    // ...
+}
+
+class Control {
+    var actions = [ControlEvent: TargetAction]()
+
+    func setTarget<T: AnyObject>(target: T, action: @escaping (T) -> () -> (), controlEvent: ControlEvent) {
+        actions[controlEvent] = TargetActionWrapper(target: target, action: action)
+    }
+
+    func removeTargetForControlEvent(controlEvent: ControlEvent) {
+        actions[controlEvent] = nil
+    }
+
+    func performActionForControlEvent(controlEvent: ControlEvent) {
+        actions[controlEvent]?.performAction()
+    }
 }
 
 
-func addTo(_ adder: Int) -> (Int) -> Int {
-    return { num in return num + adder }
-}
-
-let addTwo = addTo(2)    // addTwo: Int -> Int
-let result = addTwo(6)   // result = 8
-let resultx = addTo(1)(2)
-
-func greaterThan(_ comparer: Int) -> (Int) -> Bool {
-    return { $0 > comparer }
-}
-
-let greaterThan10 = greaterThan(10);
-
-greaterThan10(13)    // => true
-greaterThan10(9)     // => false
-
-
-func addTwoNumber(a: Int) -> (_ num: Int) -> Int {
-    return { num in a + num }
-}
-
-let addToFour = addTwoNumber(a: 4)
-addToFour(6)
+print("安全Target-Action")
 
