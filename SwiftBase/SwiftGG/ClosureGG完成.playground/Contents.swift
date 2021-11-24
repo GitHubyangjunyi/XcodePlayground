@@ -82,7 +82,7 @@ var reversedNames = names.sorted(by: backward)
 // reversedNames 为 ["Ewa", "Daniella", "Chris", "Barry", "Alex"]
 
 reversedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in return s1 > s2 } )
-
+reversedNames
 //类型推断
 reversedNames = names.sorted(by: { s1, s2 in return s1 > s2 } )
 

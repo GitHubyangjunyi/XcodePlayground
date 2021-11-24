@@ -102,3 +102,13 @@ default:
 }
 // 输出“On an axis, 9 from the origin”
 
+
+
+
+// 高级
+switch data {
+case is Film:
+  fetch(data.listItems, of: Starship.self)
+default:
+  print("未知类型", String(describing: type(of: data)))
+}
