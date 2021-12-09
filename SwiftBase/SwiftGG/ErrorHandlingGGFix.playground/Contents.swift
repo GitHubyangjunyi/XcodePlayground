@@ -1,23 +1,22 @@
 import UIKit
 
 //Swift使用遵循Error协议的类型来表示错误,这个空协议表明该类型可以用于错误处理
+//使用throw抛出错误并用throws标记函数可以抛出错误(错误有很多种)
+//只有throwing函数可以传递错误,任何在某个非throwing函数内部抛出的错误只能在函数内部处理
 enum PrinterError: Error {
     case outOfPaper
     case noToner
     case onFire
 }
 
-//只有throwing函数可以传递错误,任何在某个非throwing函数内部抛出的错误只能在函数内部处理
+//一条do语句创建一个新的包含范围该范围允许将错误传播到一个或多个catch子句
+//在catch代码块中除非你另外命名否则错误会自动命名为error
 func send(job: Int, toPrinter printerName: String) throws -> String {
     if printerName == "Never Has Toner" {
         throw PrinterError.noToner
     }
     return "Job sent"
 }
-
-//一条do语句创建一个新的包含范围该范围允许将错误传播到一个或多个catch子句
-//在do代码块中使用try来标记可以抛出错误的代码
-//在catch代码块中除非你另外命名否则错误会自动命名为error
 
 do {
     let printerResponse = try send(job: 1040, toPrinter: "Never Has Toner")

@@ -65,6 +65,10 @@ switch productBarcode {
         print("QR code: \(productCode).")
 }
 
+//如果枚举具有原始值则这些值将作为声明的一部分确定这意味着特定枚举案例的每个实例始终具有相同的原始值
+//枚举案例的另一种选择是具有与案例相关联的值——这些值是在您创建实例时确定的并且对于枚举案例的每个实例它们可以不同
+//您可以将关联的值视为类似于枚举案例实例的存储属性
+//例如考虑从服务器请求日出和日落时间的情况服务器要么以请求的信息进行响应要么以对出错的地方的描述进行响应
 enum ServerResponse {
     case result(String, String)
     case failure(String)

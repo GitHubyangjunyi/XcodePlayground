@@ -23,7 +23,6 @@ possibleInteger = .some(100)
 print(possibleInteger)
 
 
-//占位类型T是一个类型参数指定并命名一个占位类型并且紧随在函数名后面,使用一对尖括号括起来
 //一旦一个类型参数被指定可以用它来定义一个函数的参数类型或者作为函数的返回类型,还可以用作函数主体中的注释类型
 func swapTwoValues<T>(_ a: inout T, _ b: inout T) {
     let temporaryA = a
@@ -139,7 +138,7 @@ func anyCommonElements<T: Sequence, U: Sequence>(_ lhs: T, _ rhs: U) -> Bool whe
 anyCommonElements([1, 2, 3], [3])
 anyCommonElements([1, 2, 3], [5])
 
-//<T: Equatable>和<T> ... where T: Equatable>的写法是等价的
+//<T: Equatable>和<T> ... where T: Equatable的写法是等价的
 func anyCommonElementsWhere<T, U>(_ lhs: T, _ rhs: U) -> Bool where T: Sequence, U: Sequence, T.Element: Equatable, T.Element == U.Element
 {
     for lhsItem in lhs {

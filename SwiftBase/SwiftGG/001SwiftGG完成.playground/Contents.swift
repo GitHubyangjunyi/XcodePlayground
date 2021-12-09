@@ -1,8 +1,4 @@
-import UIKit
-
-//diff版本2021年03月26日
-
-
+//diff版本2021年12月8日
 
 // 访问权限控制
 //open          只使用在类上,通常在框架或者第三方库中,所有的文件都可以访问这个类/属性/方法,被标记为open的类可以被继承,方法可以在模块外也可以被重载
@@ -15,9 +11,9 @@ import UIKit
 
 
 //Swift5.5特性
-//返回值是透明类型的函数依赖于5.1运行时
+//返回值是不透明类型的函数依赖于5.1运行时
 //try？表达式不会为已返回可选类型的代码引入额外的可选类型层级
-//大整数字面量初始化代码的类型会被正确推导，例如UInt64(0xffff_ffff_ffff_ffff)将会被推导为整型类型而非溢出
+//大整数字面量初始化代码的类型会被正确推导例如UInt64(0xffff_ffff_ffff_ffff)将会被推导为整型类型而非溢出
 
 
 let decimalDouble = 12.1875
@@ -169,7 +165,6 @@ for i in 1...100 where i % 3 == 0 {
 
 
 
-
 //Defer
 //使用defer代码块来表示在函数返回前最后执行的代码,无论函数是否会抛出错误这段代码都将执行
 //使用defer可以把函数调用之初就要执行的代码和函数调用结束时的扫尾代码写在一起,虽然这两者的执行时机截然不同
@@ -182,3 +177,28 @@ for i in 1...100 where i % 3 == 0 {
 //即使没有涉及到错误处理的代码也可以使用defer语句
 
 // guard let else continue
+var fridgeIsOpen = false
+let fridgeContent = ["milk", "eggs", "leftovers"]
+
+func fridgeContains(_ food: String) -> Bool {
+    fridgeIsOpen = true
+    defer {
+        fridgeIsOpen = false
+    }
+
+    let result = fridgeContent.contains(food)
+    return result
+}
+fridgeContains("banana")
+print(fridgeIsOpen)
+
+
+
+
+
+
+
+
+
+
+
